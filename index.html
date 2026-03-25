@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タイピング練習サイト</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg1: #fff7fb;
+      --bg2: #f7fbff;
+      --bg3: #fffef3;
+      --panel: rgba(255, 255, 255, 0.82);
+      --line: rgba(80, 80, 120, 0.14);
+      --text: #2e2a3a;
+      --sub: #6f6a85;
+      --accent: #8b80ff;
+      --accent2: #ff9ccf;
+      --good: #44b97f;
+      --bad: #ff6b7a;
+      --key: #ffffff;
+      --keyText: #3b3750;
+      --keyActive: #8b80ff;
+      --keyNext: #ffd76a;
+      --shadow: 0 14px 40px rgba(111, 90, 180, 0.14);
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family:
+        "Hiragino Sans",
+        "Yu Gothic",
+        "Meiryo",
+        system-ui,
+        -apple-system,
+        sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, #ffe7f3 0%, transparent 30%),
+        radial-gradient(circle at 85% 18%, #e6f2ff 0%, transparent 28%),
+        radial-gradient(circle at 50% 100%, #fff4c7 0%, transparent 32%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 50%, var(--bg3));
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .app {
+      width: min(1200px, 100%);
+      height: min(92vh, 900px);
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 14px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .titleWrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .title {
+      font-size: clamp(20px, 2.3vw, 30px);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--sub);
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--keyText);
+      white-space: nowrap;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn, .select {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 11px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn {
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      min-height: 0;
+    }
+
+    .left {
+      display: grid;
+      grid-template-rows: auto auto auto 1fr;
+      padding: 18px;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139,128,255,0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .qCount {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--sub);
+      letter-spacing: 0.08em;
+    }
+
+    .jp {
+      font-size: clamp(34px, 4.2vw, 64px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: 0.06em;
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .roman {
+      text-align: center;
+      font-size: clamp(22px, 2.8vw, 36px);
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      min-height: 1.4em;
+    }
+
+    .typed {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      padding: 6px 10px 0;
+      min-height: 52px;
+      font-size: clamp(22px, 2.2vw, 30px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .typed .done {
+      color: var(--good);
+    }
+
+    .typed .rest {
+      color: #b6b1c8;
+    }
+
+    .typed .caret {
+      display: inline-block;
+      width: 10px;
+      height: 1.05em;
+      margin: 0 3px;
+      border-radius: 999px;
+      background: var(--accent2);
+      animation: blink 0.8s steps(1) infinite;
+      vertical-align: -0.12em;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .guide {
+      margin-top: auto;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .guideRow {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--sub);
+      font-weight: 700;
+    }
+
+    .guideRow strong {
+      color: var(--text);
+    }
+
+    .right {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 12px;
+      padding: 14px;
+      min-height: 0;
+    }
+
+    .nextKeyBox {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.62);
+      border-radius: 22px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .nextKeyLabel {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--sub);
+    }
+
+    .nextKeyValue {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      min-width: 40px;
+      text-align: right;
+    }
+
+    .keyboardWrap {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.58);
+      border-radius: 24px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      min-height: 0;
+      align-content: start;
+    }
+
+    .kbRow {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .key {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      border: 1px solid rgba(90, 90, 120, 0.12);
+      background: var(--key);
+      color: var(--keyText);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      box-shadow: 0 8px 18px rgba(83, 72, 130, 0.08);
+      transition: transform 0.08s ease, background 0.12s ease, color 0.12s ease;
+      user-select: none;
+    }
+
+    .key.next {
+      background: var(--keyNext);
+      transform: translateY(-2px);
+    }
+
+    .key.hit {
+      background: var(--keyActive);
+      color: white;
+      transform: scale(0.96);
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .message {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+      font-weight: 800;
+      color: var(--sub);
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+    }
+
+    .message strong {
+      color: var(--text);
+    }
+
+    .footerBtns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .shake {
+      animation: shake 0.2s linear;
+    }
+
+    @keyframes shake {
+      0%   { transform: translateX(0); }
+      20%  { transform: translateX(-8px); }
+      40%  { transform: translateX(8px); }
+      60%  { transform: translateX(-6px); }
+      80%  { transform: translateX(6px); }
+      100% { transform: translateX(0); }
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
+      }
+
+      .app {
+        height: auto;
+        min-height: calc(100vh - 32px);
+      }
+
+      .main {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom {
+        grid-template-columns: 1fr;
+      }
+
+      .footerBtns {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .key {
+        width: 42px;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 15px;
+      }
+
+      .jp {
+        font-size: 34px;
+      }
+
+      .roman {
+        font-size: 21px;
+      }
+
+      .typed {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <div class="topbar">
+      <div class="titleWrap">
+        <div class="title">タイピング練習サイト</div>
+        <div class="subtitle">ひらがな → ローマ字で入力</div>
+      </div>
+      <div class="stats">
+        <div class="chip">問題数: <span id="count">0</span></div>
+        <div class="chip">正解数: <span id="correct">0</span></div>
+        <div class="chip">ミス: <span id="miss">0</span></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="resetBtn">リセット</button>
+      <button class="btn" id="nextBtn">次の問題</button>
+      <button class="btn" id="soundBtn">音あり: ON</button>
+      <select class="select" id="modeSelect">
+        <option value="basic">基本50音</option>
+      </select>
+    </div>
+
+    <div class="main">
+      <section class="panel left" id="questionPanel">
+        <div class="qCount">QUESTION <span id="qNumber">1</span></div>
+        <div class="jp" id="jpText">あい</div>
+        <div class="roman" id="romanText">AI</div>
+        <div class="typed" id="typedView"></div>
+
+        <div class="guide">
+          <div class="guideRow"><span>入力方法</span><strong>キーボードでそのまま入力</strong></div>
+          <div class="guideRow"><span>次の問題</span><strong>正解で自動</strong></div>
+          <div class="guideRow"><span>リセット</span><strong>Enter</strong></div>
+          <div class="guideRow"><span>ミスタイプ</span><strong>画面が揺れる</strong></div>
+        </div>
+      </section>
+
+      <section class="panel right">
+        <div class="nextKeyBox">
+          <div class="nextKeyLabel">つぎに押すキー</div>
+          <div class="nextKeyValue" id="nextKeyView">A</div>
+        </div>
+
+        <div class="keyboardWrap" id="keyboard"></div>
+      </section>
+    </div>
+
+    <div class="bottom">
+      <div class="message" id="message">
+        <strong>準備完了。</strong> そのままキーボードを打って始めてください。
+      </div>
+      <div class="footerBtns">
+        <button class="btn" id="focusBtn">入力開始</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      { jp: "あい", roma: "ai" },
+      { jp: "うえ", roma: "ue" },
+      { jp: "あお", roma: "ao" },
+      { jp: "いえ", roma: "ie" },
+      { jp: "かお", roma: "kao" },
+      { jp: "さけ", roma: "sake" },
+      { jp: "すし", roma: "sushi" },
+      { jp: "たこ", roma: "tako" },
+      { jp: "つき", roma: "tsuki" },
+      { jp: "てら", roma: "tera" },
+      { jp: "なつ", roma: "natsu" },
+      { jp: "にく", roma: "niku" },
+      { jp: "ぬの", roma: "nuno" },
+      { jp: "ねこ", roma: "neko" },
+      { jp: "はる", roma: "haru" },
+      { jp: "ひと", roma: "hito" },
+      { jp: "ふね", roma: "fune" },
+      { jp: "へや", roma: "heya" },
+      { jp: "ほし", roma: "hoshi" },
+      { jp: "まど", roma: "mado" },
+      { jp: "みみ", roma: "mimi" },
+      { jp: "むし", roma: "mushi" },
+      { jp: "めし", roma: "meshi" },
+      { jp: "もり", roma: "mori" },
+      { jp: "やま", roma: "yama" },
+      { jp: "ゆめ", roma: "yume" },
+      { jp: "よる", roma: "yoru" },
+      { jp: "らく", roma: "raku" },
+      { jp: "りす", roma: "risu" },
+      { jp: "るす", roma: "rusu" },
+      { jp: "れき", roma: "reki" },
+      { jp: "ろうそく", roma: "rousoku" },
+      { jp: "わに", roma: "wani" },
+      { jp: "きって", roma: "kitte" },
+      { jp: "がっこう", roma: "gakkou" },
+      { jp: "しんぶん", roma: "shinbun" },
+      { jp: "きんぎょ", roma: "kingyo" },
+      { jp: "しゃしん", roma: "shashin" },
+      { jp: "ちず", roma: "chizu" },
+      { jp: "りょこう", roma: "ryokou" }
+    ];
+
+    const keyboardRows = [
+      ["Q","W","E","R","T","Y","U","I","O","P"],
+      ["A","S","D","F","G","H","J","K","L"],
+      ["Z","X","C","V","B","N","M"]
+    ];
+
+    const app = document.getElementById("app");
+    const questionPanel = document.getElementById("questionPanel");
+    const jpText = document.getElementById("jpText");
+    const romanText = document.getElementById("romanText");
+    const typedView = document.getElementById("typedView");
+    const nextKeyView = document.getElementById("nextKeyView");
+    const message = document.getElementById("message");
+    const countEl = document.getElementById("count");
+    const correctEl = document.getElementById("correct");
+    const missEl = document.getElementById("miss");
+    const qNumberEl = document.getElementById("qNumber");
+    const keyboard = document.getElementById("keyboard");
+    const resetBtn = document.getElementById("resetBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const soundBtn = document.getElementById("soundBtn");
+    const focusBtn = document.getElementById("focusBtn");
+
+    let currentIndex = 0;
+    let typed = "";
+    let totalCount = 0;
+    let correctCount = 0;
+    let missCount = 0;
+    let soundOn = true;
+    let lastHitKey = "";
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    let order = shuffle(questions);
+
+    function createKeyboard() {
+      keyboard.innerHTML = "";
+      keyboardRows.forEach(row => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "kbRow";
+        row.forEach(key => {
+          const keyEl = document.createElement("div");
+          keyEl.className = "key";
+          keyEl.dataset.key = key;
+          keyEl.textContent = key;
+          rowEl.appendChild(keyEl);
+        });
+        keyboard.appendChild(rowEl);
+      });
+    }
+
+    function updateKeyboard() {
+      const keys = document.querySelectorAll(".key");
+      const target = getNextExpectedKey();
+
+      keys.forEach(el => {
+        el.classList.remove("next", "hit");
+        if (target && el.dataset.key === target.toUpperCase()) {
+          el.classList.add("next");
+        }
+        if (lastHitKey && el.dataset.key === lastHitKey.toUpperCase()) {
+          el.classList.add("hit");
+        }
+      });
+
+      nextKeyView.textContent = target ? target.toUpperCase() : "✓";
+      setTimeout(() => {
+        lastHitKey = "";
+        document.querySelectorAll(".key").forEach(el => el.classList.remove("hit"));
+        const target2 = getNextExpectedKey();
+        document.querySelectorAll(".key").forEach(el => {
+          if (target2 && el.dataset.key === target2.toUpperCase()) {
+            el.classList.add("next");
+          }
+        });
+      }, 90);
+    }
+
+    function getCurrentQuestion() {
+      return order[currentIndex];
+    }
+
+    function getNextExpectedKey() {
+      const q = getCurrentQuestion();
+      return q.roma[typed.length] || "";
+    }
+
+    function renderTyped() {
+      const q = getCurrentQuestion();
+      const done = q.roma.slice(0, typed.length);
+      const rest = q.roma.slice(typed.length);
+
+      typedView.innerHTML = `
+        <span class="done">${escapeHtml(done)}</span>
+        ${typed.length < q.roma.length ? '<span class="caret"></span>' : ''}
+        <span class="rest">${escapeHtml(rest)}</span>
+      `;
+    }
+
+    function renderQuestion() {
+      const q = getCurrentQuestion();
+      jpText.textContent = q.jp;
+      romanText.textContent = q.roma.toUpperCase();
+      qNumberEl.textContent = currentIndex + 1;
+      renderTyped();
+      updateKeyboard();
+    }
+
+    function updateStats() {
+      countEl.textContent = totalCount;
+      correctEl.textContent = correctCount;
+      missEl.textContent = missCount;
+    }
+
+    function setMessage(html) {
+      message.innerHTML = html;
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex >= order.length) {
+        order = shuffle(questions);
+        currentIndex = 0;
+      }
+      typed = "";
+      renderQuestion();
+      setMessage("<strong>正解。</strong> 次の問題です。");
+    }
+
+    function resetAll() {
+      typed = "";
+      totalCount = 0;
+      correctCount = 0;
+      missCount = 0;
+      currentIndex = 0;
+      order = shuffle(questions);
+      updateStats();
+      renderQuestion();
+      setMessage("<strong>リセットしました。</strong> 最初から始められます。");
+    }
+
+    function handleCorrectKey(key) {
+      const q = getCurrentQuestion();
+      typed += key;
+      totalCount++;
+      lastHitKey = key;
+      playHit();
+      renderTyped();
+      updateKeyboard();
+      updateStats();
+
+      if (typed === q.roma) {
+        correctCount++;
+        updateStats();
+        setTimeout(() => {
+          nextQuestion();
+        }, 180);
+      }
+    }
+
+    function handleWrongKey() {
+      missCount++;
+      updateStats();
+      playMiss();
+      questionPanel.classList.remove("shake");
+      void questionPanel.offsetWidth;
+      questionPanel.classList.add("shake");
+      setMessage("<strong>ミスタイプ。</strong> 次に押すキーを見てください。");
+    }
+
+    function handleKeydown(e) {
+      if (e.repeat) return;
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        resetAll();
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+      if (!/^[a-z]$/.test(key)) return;
+
+      const expected = getNextExpectedKey();
+      if (!expected) return;
+
+      if (key === expected) {
+        handleCorrectKey(key);
+      } else {
+        handleWrongKey();
+      }
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    let audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function beep({ frequency = 600, duration = 0.03, type = "square", gain = 0.03 }) {
+      if (!soundOn) return;
+      const ctx = getAudioCtx();
+      const osc = ctx.createOscillator();
+      const amp = ctx.createGain();
+
+      osc.type = type;
+      osc.frequency.value = frequency;
+      amp.gain.value = gain;
+
+      osc.connect(amp);
+      amp.connect(ctx.destination);
+
+      const now = ctx.currentTime;
+      amp.gain.setValueAtTime(gain, now);
+      amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.start(now);
+      osc.stop(now + duration);
+    }
+
+    function playHit() {
+      beep({ frequency: 900, duration: 0.018, type: "square", gain: 0.018 });
+      setTimeout(() => {
+        beep({ frequency: 700, duration: 0.02, type: "square", gain: 0.012 });
+      }, 8);
+    }
+
+    function playMiss() {
+      beep({ frequency: 220, duration: 0.06, type: "sawtooth", gain: 0.025 });
+    }
+
+    resetBtn.addEventListener("click", resetAll);
+    nextBtn.addEventListener("click", () => {
+      typed = "";
+      nextQuestion();
+    });
+
+    soundBtn.addEventListener("click", async () => {
+      soundOn = !soundOn;
+      soundBtn.textContent = `音あり: ${soundOn ? "ON" : "OFF"}`;
+      if (soundOn) {
+        try {
+          const ctx = getAudioCtx();
+          if (ctx.state === "suspended") {
+            await ctx.resume();
+          }
+        } catch (_) {}
+      }
+    });
+
+    focusBtn.addEventListener("click", async () => {
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === "suspended") {
+          await ctx.resume();
+        }
+      } catch (_) {}
+      window.focus();
+      setMessage("<strong>入力受付中。</strong> キーボードを打ってください。");
+    });
+
+    window.addEventListener("keydown", async (e) => {
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === "suspended") {
+          await ctx.resume();
+        }
+      } catch (_) {}
+      handleKeydown(e);
+    });
+
+    createKeyboard();
+    updateStats();
+    renderQuestion();
+  </script>
+</body>
+</html>
