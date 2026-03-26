@@ -36,11 +36,17 @@
       --keyShadow: rgba(0, 0, 0, 0.68);
       --keyActive: #ff1fd1;
       --keyNext: #00f7ff;
+      --mutedRoma: #425975;
+      --bgGlow1: rgba(0,247,255,0.10);
+      --bgGlow2: rgba(255,31,209,0.14);
+      --bgGlow3: rgba(0,255,157,0.06);
+      --scan1: rgba(0,247,255,0.032);
+      --scan2: rgba(0,247,255,0.05);
+      --scan3: rgba(255,31,209,0.04);
       --shadow:
         0 0 0 1px rgba(0,247,255,0.07),
         0 0 18px rgba(0,247,255,0.12),
         0 0 48px rgba(255,31,209,0.08);
-      --mutedRoma: #425975;
       --glowCyan:
         0 0 6px rgba(0,247,255,0.9),
         0 0 18px rgba(0,247,255,0.42),
@@ -66,9 +72,9 @@
         sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 12% 16%, rgba(0,247,255,0.10) 0%, transparent 20%),
-        radial-gradient(circle at 88% 18%, rgba(255,31,209,0.14) 0%, transparent 22%),
-        radial-gradient(circle at 50% 100%, rgba(0,255,157,0.06) 0%, transparent 24%),
+        radial-gradient(circle at 12% 16%, var(--bgGlow1) 0%, transparent 20%),
+        radial-gradient(circle at 88% 18%, var(--bgGlow2) 0%, transparent 22%),
+        radial-gradient(circle at 50% 100%, var(--bgGlow3) 0%, transparent 24%),
         linear-gradient(135deg, var(--bg1), var(--bg2) 50%, var(--bg3));
       position: relative;
     }
@@ -84,7 +90,7 @@
           to bottom,
           transparent 0px,
           transparent 2px,
-          rgba(0,247,255,0.032) 3px,
+          var(--scan1) 3px,
           transparent 4px
         );
       opacity: 0.85;
@@ -100,8 +106,8 @@
         linear-gradient(
           90deg,
           transparent 0%,
-          rgba(0,247,255,0.05) 48%,
-          rgba(255,31,209,0.04) 52%,
+          var(--scan2) 48%,
+          var(--scan3) 52%,
           transparent 100%
         );
       animation: scanMove 5.8s linear infinite;
@@ -151,7 +157,7 @@
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(90deg, transparent, rgba(0,247,255,0.05), rgba(255,31,209,0.05), transparent);
+        linear-gradient(90deg, transparent, rgba(255,255,255,0.03), rgba(255,255,255,0.02), transparent);
       transform: translateX(-100%);
       animation: sheen 6.2s linear infinite;
     }
@@ -164,7 +170,7 @@
       pointer-events: none;
       box-shadow:
         inset 0 0 0 1px rgba(255,255,255,0.015),
-        inset 0 0 24px rgba(0,247,255,0.04);
+        inset 0 0 24px rgba(255,255,255,0.03);
     }
 
     @keyframes sheen {
@@ -189,7 +195,7 @@
 
     .chip {
       background: rgba(4, 8, 18, 0.9);
-      border: 1px solid rgba(0,247,255,0.22);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 999px;
       padding: 8px 12px;
       font-size: 13px;
@@ -198,14 +204,14 @@
       white-space: nowrap;
       box-shadow:
         inset 0 0 0 1px rgba(255,255,255,0.02),
-        0 0 12px rgba(0,247,255,0.14);
-      text-shadow: 0 0 10px rgba(0,247,255,0.24);
+        0 0 12px rgba(255,255,255,0.08);
+      text-shadow: 0 0 10px rgba(255,255,255,0.12);
       font-family: "Orbitron", "Audiowide", sans-serif;
       letter-spacing: 0.04em;
     }
 
     .btn, .select {
-      border: 1px solid rgba(0,247,255,0.24);
+      border: 1px solid rgba(255,255,255,0.16);
       background:
         linear-gradient(180deg, rgba(10,18,36,0.96), rgba(4,8,18,0.92));
       color: var(--text);
@@ -215,7 +221,7 @@
       font-weight: 800;
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
-      text-shadow: 0 0 10px rgba(0,247,255,0.22);
+      text-shadow: 0 0 10px rgba(255,255,255,0.15);
       font-family: "Orbitron", "Audiowide", sans-serif;
       letter-spacing: 0.05em;
     }
@@ -227,11 +233,11 @@
 
     .btn:hover,
     .select:hover {
-      border-color: rgba(255,31,209,0.42);
+      border-color: rgba(255,255,255,0.34);
       box-shadow:
-        0 0 0 1px rgba(255,31,209,0.08),
-        0 0 18px rgba(255,31,209,0.18),
-        0 0 38px rgba(0,247,255,0.12);
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 0 18px rgba(255,255,255,0.1),
+        0 0 38px rgba(255,255,255,0.08);
       transform: translateY(-1px);
     }
 
@@ -256,7 +262,7 @@
     .panel {
       background:
         linear-gradient(180deg, rgba(4,8,18,0.86), rgba(3,6,14,0.82));
-      border: 1px solid rgba(0,247,255,0.16);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 24px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
@@ -280,7 +286,7 @@
       width: 430px;
       height: 430px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,31,209,0.16), transparent 68%);
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 68%);
       pointer-events: none;
       filter: blur(10px);
     }
@@ -292,13 +298,13 @@
       width: 430px;
       height: 430px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,247,255,0.14), transparent 68%);
+      background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 68%);
       pointer-events: none;
       filter: blur(10px);
     }
 
     .questionCard {
-      border: 1px solid rgba(0,247,255,0.24);
+      border: 1px solid rgba(255,255,255,0.14);
       background:
         linear-gradient(180deg, rgba(2,6,14,0.94), rgba(7,10,22,0.84));
       border-radius: 20px;
@@ -309,8 +315,8 @@
       z-index: 1;
       box-shadow:
         inset 0 0 0 1px rgba(255,255,255,0.02),
-        0 0 18px rgba(0,247,255,0.14),
-        0 0 46px rgba(255,31,209,0.08);
+        0 0 18px rgba(255,255,255,0.08),
+        0 0 46px rgba(255,255,255,0.05);
       overflow: hidden;
     }
 
@@ -320,7 +326,7 @@
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(120deg, transparent 0%, rgba(255,31,209,0.06) 44%, rgba(0,247,255,0.08) 56%, transparent 100%);
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.04) 44%, rgba(255,255,255,0.06) 56%, transparent 100%);
       opacity: 0.8;
     }
 
@@ -331,8 +337,8 @@
       border-radius: inherit;
       pointer-events: none;
       box-shadow:
-        inset 0 0 0 1px rgba(0,247,255,0.08),
-        inset 0 0 28px rgba(0,247,255,0.04);
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 0 28px rgba(255,255,255,0.03);
     }
 
     .qTop {
@@ -363,8 +369,8 @@
       color: #f5fdff;
       text-shadow:
         0 0 8px rgba(255,255,255,0.08),
-        0 0 14px rgba(0,247,255,0.14),
-        0 0 24px rgba(255,31,209,0.08);
+        0 0 14px rgba(255,255,255,0.1),
+        0 0 24px rgba(255,255,255,0.06);
       font-family:
         "Zen Kaku Gothic New",
         "Noto Sans JP",
@@ -388,7 +394,7 @@
       min-height: 1.3em;
       line-height: 1.5;
       word-break: break-word;
-      text-shadow: 0 0 12px rgba(0,247,255,0.18);
+      text-shadow: 0 0 12px rgba(255,255,255,0.12);
       font-family: "Orbitron", "Audiowide", sans-serif;
     }
 
@@ -406,7 +412,7 @@
       line-height: 1.45;
       min-height: 1.35em;
       word-break: break-word;
-      text-shadow: 0 0 12px rgba(0,247,255,0.1);
+      text-shadow: 0 0 12px rgba(255,255,255,0.08);
       font-family: "Orbitron", "Audiowide", sans-serif;
     }
 
@@ -420,8 +426,8 @@
     .roman .current {
       color: var(--accent2);
       text-shadow:
-        0 0 10px rgba(255,31,209,0.7),
-        0 0 24px rgba(255,31,209,0.22);
+        0 0 10px color-mix(in srgb, var(--accent2) 70%, white 30%),
+        0 0 24px color-mix(in srgb, var(--accent2) 40%, transparent 60%);
     }
 
     .roman .rest {
@@ -441,8 +447,8 @@
       border-radius: 999px;
       background: linear-gradient(180deg, var(--accent2), var(--accent));
       box-shadow:
-        0 0 10px rgba(255,31,209,0.7),
-        0 0 22px rgba(0,247,255,0.3);
+        0 0 10px color-mix(in srgb, var(--accent2) 70%, white 30%),
+        0 0 22px color-mix(in srgb, var(--accent) 40%, transparent 60%);
       animation: blink 0.8s steps(1) infinite;
       vertical-align: -0.1em;
     }
@@ -472,8 +478,8 @@
 
     .wikiLink:hover {
       color: #ffffff;
-      border-bottom-color: rgba(255,31,209,0.7);
-      text-shadow: 0 0 12px rgba(255,31,209,0.22);
+      border-bottom-color: rgba(255,255,255,0.7);
+      text-shadow: 0 0 12px rgba(255,255,255,0.18);
     }
 
     .assistText {
@@ -486,7 +492,7 @@
     }
 
     .keyboardWrap {
-      border: 1px solid rgba(0,247,255,0.18);
+      border: 1px solid rgba(255,255,255,0.12);
       background:
         linear-gradient(180deg, rgba(2,6,14,0.92), rgba(4,8,18,0.82));
       border-radius: 20px;
@@ -501,7 +507,7 @@
       overflow: auto;
       box-shadow:
         inset 0 0 0 1px rgba(255,255,255,0.02),
-        0 0 22px rgba(0,247,255,0.08);
+        0 0 22px rgba(255,255,255,0.05);
     }
 
     .keyboardWrap::after {
@@ -511,8 +517,8 @@
       border-radius: inherit;
       pointer-events: none;
       box-shadow:
-        inset 0 0 0 1px rgba(0,247,255,0.06),
-        inset 0 0 36px rgba(255,31,209,0.03);
+        inset 0 0 0 1px rgba(255,255,255,0.03),
+        inset 0 0 36px rgba(255,255,255,0.02);
     }
 
     .kbRow {
@@ -531,7 +537,7 @@
       color: var(--keyText);
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.04),
-        inset 0 -1px 0 rgba(0,247,255,0.05),
+        inset 0 -1px 0 rgba(255,255,255,0.04),
         0 4px 10px var(--keyShadow);
       display: flex;
       flex-direction: column;
@@ -550,7 +556,7 @@
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(180deg, rgba(0,247,255,0.04), transparent 44%, rgba(255,31,209,0.04));
+        linear-gradient(180deg, rgba(255,255,255,0.03), transparent 44%, rgba(255,255,255,0.02));
     }
 
     .key::after {
@@ -567,7 +573,7 @@
       font-weight: 800;
       line-height: 1;
       letter-spacing: 0.04em;
-      text-shadow: 0 0 10px rgba(0,247,255,0.14);
+      text-shadow: 0 0 10px rgba(255,255,255,0.1);
       font-family: "Orbitron", "Audiowide", sans-serif;
     }
 
@@ -597,21 +603,21 @@
     }
 
     .key.next {
-      background: linear-gradient(180deg, rgba(0,247,255,0.38) 0%, rgba(0,120,140,0.22) 100%);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 45%, #0d1630 55%) 0%, color-mix(in srgb, var(--accent) 25%, #060b18 75%) 100%);
       color: #ffffff;
-      border-color: rgba(0,247,255,0.88);
+      border-color: color-mix(in srgb, var(--accent) 70%, white 30%);
       transform: translateY(-1px);
       box-shadow:
         inset 0 0 12px rgba(255,255,255,0.05),
-        0 0 16px rgba(0,247,255,0.44),
-        0 0 34px rgba(0,247,255,0.18);
+        0 0 16px color-mix(in srgb, var(--accent) 45%, transparent 55%),
+        0 0 34px color-mix(in srgb, var(--accent) 20%, transparent 80%);
     }
 
     .key.next .top,
     .key.next .bottom {
       text-shadow:
         0 0 10px rgba(255,255,255,0.2),
-        0 0 18px rgba(0,247,255,0.34);
+        0 0 18px color-mix(in srgb, var(--accent) 34%, transparent 66%);
     }
 
     .key.next .bottom {
@@ -619,21 +625,21 @@
     }
 
     .key.hit {
-      background: linear-gradient(180deg, rgba(255,31,209,0.5) 0%, rgba(95,15,78,0.42) 100%);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent2) 52%, #0d1630 48%) 0%, color-mix(in srgb, var(--accent2) 35%, #060b18 65%) 100%);
       color: white;
-      border-color: rgba(255,31,209,0.94);
+      border-color: color-mix(in srgb, var(--accent2) 75%, white 25%);
       transform: scale(0.97);
       box-shadow:
         inset 0 0 12px rgba(255,255,255,0.05),
-        0 0 18px rgba(255,31,209,0.48),
-        0 0 36px rgba(255,31,209,0.2);
+        0 0 18px color-mix(in srgb, var(--accent2) 45%, transparent 55%),
+        0 0 36px color-mix(in srgb, var(--accent2) 20%, transparent 80%);
     }
 
     .key.hit .top,
     .key.hit .bottom {
       text-shadow:
         0 0 10px rgba(255,255,255,0.2),
-        0 0 18px rgba(255,31,209,0.34);
+        0 0 18px color-mix(in srgb, var(--accent2) 34%, transparent 66%);
     }
 
     .key.hit .bottom {
@@ -766,12 +772,25 @@
         <button class="btn" id="resetBtn">リセット</button>
         <button class="btn" id="soundBtn">音あり: ON</button>
 
+        <select class="select" id="themeSelect">
+          <option value="neonCyan">配色: ネオンシアン</option>
+          <option value="neonPurple">配色: ネオンパープル</option>
+          <option value="crimson">配色: クリムゾン</option>
+          <option value="emerald">配色: エメラルド</option>
+          <option value="gold">配色: ゴールド</option>
+        </select>
+
         <select class="select" id="soundTypeSelect">
           <option value="koto1">通常音: コト1</option>
           <option value="koto2">通常音: コト2</option>
           <option value="koto3">通常音: コト3</option>
           <option value="koto4">通常音: コト4</option>
           <option value="koto5">通常音: コト5</option>
+          <option value="koto6">通常音: コト6</option>
+          <option value="koto7">通常音: コト7</option>
+          <option value="koto8">通常音: コト8</option>
+          <option value="koto9">通常音: コト9</option>
+          <option value="koto10">通常音: コト10</option>
         </select>
 
         <select class="select" id="missSoundTypeSelect">
@@ -1055,6 +1074,134 @@
       ]
     ];
 
+    const themes = {
+      neonCyan: {
+        "--bg1": "#01030a",
+        "--bg2": "#050813",
+        "--bg3": "#090312",
+        "--text": "#ecfbff",
+        "--sub": "#7edbff",
+        "--accent": "#00f7ff",
+        "--accent2": "#ff1fd1",
+        "--good": "#00ff9d",
+        "--bad": "#ff4d78",
+        "--warn": "#ffe45a",
+        "--keyText": "#ecfbff",
+        "--keySub": "#77bdd8",
+        "--keyStroke": "rgba(0,247,255,0.18)",
+        "--mutedRoma": "#425975",
+        "--bgGlow1": "rgba(0,247,255,0.10)",
+        "--bgGlow2": "rgba(255,31,209,0.14)",
+        "--bgGlow3": "rgba(0,255,157,0.06)",
+        "--scan1": "rgba(0,247,255,0.032)",
+        "--scan2": "rgba(0,247,255,0.05)",
+        "--scan3": "rgba(255,31,209,0.04)",
+        "--shadow": "0 0 0 1px rgba(0,247,255,0.07), 0 0 18px rgba(0,247,255,0.12), 0 0 48px rgba(255,31,209,0.08)",
+        "--glowCyan": "0 0 6px rgba(0,247,255,0.9), 0 0 18px rgba(0,247,255,0.42), 0 0 34px rgba(0,247,255,0.18)",
+        "--glowPink": "0 0 6px rgba(255,31,209,0.92), 0 0 18px rgba(255,31,209,0.42), 0 0 34px rgba(255,31,209,0.16)"
+      },
+      neonPurple: {
+        "--bg1": "#080311",
+        "--bg2": "#12061f",
+        "--bg3": "#06030f",
+        "--text": "#f5edff",
+        "--sub": "#ceb7ff",
+        "--accent": "#9b6dff",
+        "--accent2": "#ff5ad8",
+        "--good": "#84ffcf",
+        "--bad": "#ff6587",
+        "--warn": "#ffe27b",
+        "--keyText": "#f6f0ff",
+        "--keySub": "#cab8ff",
+        "--keyStroke": "rgba(155,109,255,0.22)",
+        "--mutedRoma": "#5d4d7f",
+        "--bgGlow1": "rgba(155,109,255,0.13)",
+        "--bgGlow2": "rgba(255,90,216,0.13)",
+        "--bgGlow3": "rgba(132,255,207,0.05)",
+        "--scan1": "rgba(155,109,255,0.03)",
+        "--scan2": "rgba(155,109,255,0.05)",
+        "--scan3": "rgba(255,90,216,0.04)",
+        "--shadow": "0 0 0 1px rgba(155,109,255,0.08), 0 0 18px rgba(155,109,255,0.16), 0 0 48px rgba(255,90,216,0.09)",
+        "--glowCyan": "0 0 6px rgba(155,109,255,0.88), 0 0 18px rgba(155,109,255,0.4), 0 0 34px rgba(155,109,255,0.18)",
+        "--glowPink": "0 0 6px rgba(255,90,216,0.88), 0 0 18px rgba(255,90,216,0.4), 0 0 34px rgba(255,90,216,0.16)"
+      },
+      crimson: {
+        "--bg1": "#120204",
+        "--bg2": "#1b060a",
+        "--bg3": "#090203",
+        "--text": "#fff1f3",
+        "--sub": "#ffb0c2",
+        "--accent": "#ff4f7d",
+        "--accent2": "#ff9f43",
+        "--good": "#92ffb4",
+        "--bad": "#ff3d59",
+        "--warn": "#ffe88a",
+        "--keyText": "#fff4f5",
+        "--keySub": "#ffb6c6",
+        "--keyStroke": "rgba(255,79,125,0.22)",
+        "--mutedRoma": "#7b4e5c",
+        "--bgGlow1": "rgba(255,79,125,0.12)",
+        "--bgGlow2": "rgba(255,159,67,0.11)",
+        "--bgGlow3": "rgba(146,255,180,0.05)",
+        "--scan1": "rgba(255,79,125,0.03)",
+        "--scan2": "rgba(255,79,125,0.05)",
+        "--scan3": "rgba(255,159,67,0.04)",
+        "--shadow": "0 0 0 1px rgba(255,79,125,0.08), 0 0 18px rgba(255,79,125,0.14), 0 0 48px rgba(255,159,67,0.08)",
+        "--glowCyan": "0 0 6px rgba(255,79,125,0.9), 0 0 18px rgba(255,79,125,0.42), 0 0 34px rgba(255,79,125,0.18)",
+        "--glowPink": "0 0 6px rgba(255,159,67,0.9), 0 0 18px rgba(255,159,67,0.42), 0 0 34px rgba(255,159,67,0.16)"
+      },
+      emerald: {
+        "--bg1": "#02110b",
+        "--bg2": "#052017",
+        "--bg3": "#021009",
+        "--text": "#effff8",
+        "--sub": "#9df1c9",
+        "--accent": "#33ffb1",
+        "--accent2": "#2de1fc",
+        "--good": "#b7ff53",
+        "--bad": "#ff647a",
+        "--warn": "#fff28a",
+        "--keyText": "#effff8",
+        "--keySub": "#97dec3",
+        "--keyStroke": "rgba(51,255,177,0.2)",
+        "--mutedRoma": "#4d7268",
+        "--bgGlow1": "rgba(51,255,177,0.12)",
+        "--bgGlow2": "rgba(45,225,252,0.11)",
+        "--bgGlow3": "rgba(183,255,83,0.05)",
+        "--scan1": "rgba(51,255,177,0.03)",
+        "--scan2": "rgba(51,255,177,0.05)",
+        "--scan3": "rgba(45,225,252,0.04)",
+        "--shadow": "0 0 0 1px rgba(51,255,177,0.08), 0 0 18px rgba(51,255,177,0.14), 0 0 48px rgba(45,225,252,0.08)",
+        "--glowCyan": "0 0 6px rgba(51,255,177,0.88), 0 0 18px rgba(51,255,177,0.42), 0 0 34px rgba(51,255,177,0.18)",
+        "--glowPink": "0 0 6px rgba(45,225,252,0.88), 0 0 18px rgba(45,225,252,0.42), 0 0 34px rgba(45,225,252,0.16)"
+      },
+      gold: {
+        "--bg1": "#120d02",
+        "--bg2": "#221806",
+        "--bg3": "#0c0802",
+        "--text": "#fff9ea",
+        "--sub": "#ffd98a",
+        "--accent": "#ffcc4d",
+        "--accent2": "#ff8a3d",
+        "--good": "#c7ff75",
+        "--bad": "#ff6464",
+        "--warn": "#fff09e",
+        "--keyText": "#fff9ea",
+        "--keySub": "#f4cb7c",
+        "--keyStroke": "rgba(255,204,77,0.22)",
+        "--mutedRoma": "#7c6840",
+        "--bgGlow1": "rgba(255,204,77,0.12)",
+        "--bgGlow2": "rgba(255,138,61,0.11)",
+        "--bgGlow3": "rgba(199,255,117,0.05)",
+        "--scan1": "rgba(255,204,77,0.03)",
+        "--scan2": "rgba(255,204,77,0.05)",
+        "--scan3": "rgba(255,138,61,0.04)",
+        "--shadow": "0 0 0 1px rgba(255,204,77,0.08), 0 0 18px rgba(255,204,77,0.14), 0 0 48px rgba(255,138,61,0.08)",
+        "--glowCyan": "0 0 6px rgba(255,204,77,0.88), 0 0 18px rgba(255,204,77,0.42), 0 0 34px rgba(255,204,77,0.18)",
+        "--glowPink": "0 0 6px rgba(255,138,61,0.88), 0 0 18px rgba(255,138,61,0.42), 0 0 34px rgba(255,138,61,0.16)"
+      }
+    };
+
     const smallKanaSet = new Set(["ゃ","ゅ","ょ","ぁ","ぃ","ぅ","ぇ","ぉ"]);
     const sokuon = "っ";
 
@@ -1072,6 +1219,7 @@
     const keyboard = document.getElementById("keyboard");
     const resetBtn = document.getElementById("resetBtn");
     const soundBtn = document.getElementById("soundBtn");
+    const themeSelect = document.getElementById("themeSelect");
     const soundTypeSelect = document.getElementById("soundTypeSelect");
     const missSoundTypeSelect = document.getElementById("missSoundTypeSelect");
     const modeSelect = document.getElementById("modeSelect");
@@ -1084,6 +1232,7 @@
     let soundOn = true;
     let soundType = "koto1";
     let missSoundType = "same";
+    let currentTheme = "neonCyan";
     let lastHitKey = "";
 
     let activeState = null;
@@ -1115,6 +1264,14 @@
         clearTimeout(nextQuestionTimer);
         nextQuestionTimer = null;
       }
+    }
+
+    function applyTheme(themeName) {
+      const theme = themes[themeName] || themes.neonCyan;
+      Object.entries(theme).forEach(([key, value]) => {
+        document.documentElement.style.setProperty(key, value);
+      });
+      currentTheme = themeName;
     }
 
     function createKeyboard() {
@@ -1377,8 +1534,7 @@
           html += `<span class="rest">${escapeHtml(restPart)}</span>`;
         }
       }
-
-      if (activeState.unitIndex >= activeState.displayRomaUnits.length) {
+            if (activeState.unitIndex >= activeState.displayRomaUnits.length) {
         html = activeState.displayRomaUnits
           .map(unit => `<span class="done">${escapeHtml(unit)}</span>`)
           .join("");
@@ -1678,7 +1834,7 @@
       utterance.lang = "en-US";
       utterance.rate = 1.0;
       utterance.pitch = 1.0;
-      utterance.volume = 1.0;
+      utterance.volume = 0.72;
 
       const preferredVoice = getPreferredEnglishVoice();
       if (preferredVoice) {
@@ -1747,6 +1903,15 @@
       return Promise.resolve();
     }
 
+    function createMaster(input, outputGain = 1.0) {
+      const ctx = getAudioCtx();
+      const gainNode = ctx.createGain();
+      gainNode.gain.value = outputGain;
+      input.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      return gainNode;
+    }
+
     function makeTone(ctx, {
       freq = 440,
       type = "sine",
@@ -1755,7 +1920,8 @@
       gain = 0.02,
       attack = 0.002,
       decay = 0.05,
-      endFreq = null
+      endFreq = null,
+      destination = null
     }) {
       const osc = ctx.createOscillator();
       const amp = ctx.createGain();
@@ -1774,10 +1940,58 @@
       amp.gain.exponentialRampToValueAtTime(0.0001, start + Math.max(attack + 0.001, decay));
 
       osc.connect(amp);
-      amp.connect(ctx.destination);
+      amp.connect(destination || ctx.destination);
 
       osc.start(start);
       osc.stop(start + duration);
+    }
+
+    function makeNoise(ctx, {
+      start = 0,
+      duration = 0.03,
+      gain = 0.02,
+      highpass = 1000,
+      bandpass = null,
+      destination = null
+    }) {
+      const buffer = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * duration)), ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+
+      let lastNode = source;
+
+      if (highpass) {
+        const hp = ctx.createBiquadFilter();
+        hp.type = "highpass";
+        hp.frequency.value = highpass;
+        lastNode.connect(hp);
+        lastNode = hp;
+      }
+
+      if (bandpass) {
+        const bp = ctx.createBiquadFilter();
+        bp.type = "bandpass";
+        bp.frequency.value = bandpass;
+        bp.Q.value = 0.8;
+        lastNode.connect(bp);
+        lastNode = bp;
+      }
+
+      const amp = ctx.createGain();
+      amp.gain.setValueAtTime(0.0001, start);
+      amp.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), start + 0.002);
+      amp.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+      lastNode.connect(amp);
+      amp.connect(destination || ctx.destination);
+
+      source.start(start);
+      source.stop(start + duration);
     }
 
     function playCurrentHitPreview() {
@@ -1785,31 +1999,61 @@
       const ctx = getAudioCtx();
       const t = ctx.currentTime + 0.001;
 
+      const masterIn = ctx.createGain();
+      const master = createMaster(masterIn, 1.55);
+
       switch (soundType) {
         case "koto1":
-          makeTone(ctx, { freq: 960, type: "triangle", start: t, duration: 0.030, gain: 0.030, decay: 0.030 });
-          makeTone(ctx, { freq: 680, type: "sine", start: t + 0.012, duration: 0.028, gain: 0.015, decay: 0.028 });
+          makeTone(ctx, { freq: 960, type: "triangle", start: t, duration: 0.030, gain: 0.060, decay: 0.030, destination: masterIn });
+          makeTone(ctx, { freq: 680, type: "sine", start: t + 0.012, duration: 0.028, gain: 0.030, decay: 0.028, destination: masterIn });
           break;
         case "koto2":
-          makeTone(ctx, { freq: 560, type: "triangle", start: t, duration: 0.050, gain: 0.030, decay: 0.050 });
-          makeTone(ctx, { freq: 410, type: "triangle", start: t + 0.018, duration: 0.040, gain: 0.016, decay: 0.040 });
+          makeTone(ctx, { freq: 560, type: "triangle", start: t, duration: 0.050, gain: 0.058, decay: 0.050, destination: masterIn });
+          makeTone(ctx, { freq: 410, type: "triangle", start: t + 0.018, duration: 0.040, gain: 0.028, decay: 0.040, destination: masterIn });
           break;
         case "koto3":
-          makeTone(ctx, { freq: 1320, type: "square", start: t, duration: 0.018, gain: 0.018, decay: 0.018 });
-          makeTone(ctx, { freq: 880, type: "triangle", start: t + 0.008, duration: 0.022, gain: 0.014, decay: 0.022 });
+          makeTone(ctx, { freq: 1320, type: "square", start: t, duration: 0.018, gain: 0.038, decay: 0.018, destination: masterIn });
+          makeTone(ctx, { freq: 880, type: "triangle", start: t + 0.008, duration: 0.022, gain: 0.028, decay: 0.022, destination: masterIn });
           break;
         case "koto4":
-          makeTone(ctx, { freq: 430, type: "sine", start: t, duration: 0.060, gain: 0.032, decay: 0.060 });
-          makeTone(ctx, { freq: 320, type: "triangle", start: t + 0.016, duration: 0.040, gain: 0.014, decay: 0.040 });
+          makeTone(ctx, { freq: 430, type: "sine", start: t, duration: 0.060, gain: 0.062, decay: 0.060, destination: masterIn });
+          makeTone(ctx, { freq: 320, type: "triangle", start: t + 0.016, duration: 0.040, gain: 0.028, decay: 0.040, destination: masterIn });
           break;
         case "koto5":
-          makeTone(ctx, { freq: 1500, type: "triangle", start: t, duration: 0.014, gain: 0.020, decay: 0.014 });
-          makeTone(ctx, { freq: 980, type: "sine", start: t + 0.006, duration: 0.018, gain: 0.010, decay: 0.018 });
+          makeTone(ctx, { freq: 1500, type: "triangle", start: t, duration: 0.014, gain: 0.040, decay: 0.014, destination: masterIn });
+          makeTone(ctx, { freq: 980, type: "sine", start: t + 0.006, duration: 0.018, gain: 0.022, decay: 0.018, destination: masterIn });
+          break;
+        case "koto6":
+          makeTone(ctx, { freq: 720, type: "square", start: t, duration: 0.024, gain: 0.052, decay: 0.024, destination: masterIn });
+          makeTone(ctx, { freq: 1100, type: "triangle", start: t + 0.006, duration: 0.020, gain: 0.026, decay: 0.020, destination: masterIn });
+          makeNoise(ctx, { start: t, duration: 0.018, gain: 0.010, highpass: 2200, destination: masterIn });
+          break;
+        case "koto7":
+          makeTone(ctx, { freq: 380, type: "triangle", start: t, duration: 0.050, gain: 0.070, decay: 0.050, destination: masterIn });
+          makeTone(ctx, { freq: 760, type: "sine", start: t + 0.010, duration: 0.028, gain: 0.020, decay: 0.028, destination: masterIn });
+          break;
+        case "koto8":
+          makeTone(ctx, { freq: 1040, type: "sine", start: t, duration: 0.026, gain: 0.050, decay: 0.026, destination: masterIn });
+          makeNoise(ctx, { start: t + 0.002, duration: 0.022, gain: 0.018, highpass: 3000, destination: masterIn });
+          break;
+        case "koto9":
+          makeTone(ctx, { freq: 640, type: "triangle", start: t, duration: 0.022, gain: 0.056, decay: 0.022, destination: masterIn });
+          makeTone(ctx, { freq: 520, type: "sine", start: t + 0.008, duration: 0.032, gain: 0.030, decay: 0.032, destination: masterIn });
+          makeTone(ctx, { freq: 1280, type: "triangle", start: t + 0.004, duration: 0.012, gain: 0.016, decay: 0.012, destination: masterIn });
+          break;
+        case "koto10":
+          makeTone(ctx, { freq: 870, type: "triangle", start: t, duration: 0.018, gain: 0.048, decay: 0.018, destination: masterIn });
+          makeTone(ctx, { freq: 620, type: "triangle", start: t + 0.010, duration: 0.030, gain: 0.032, decay: 0.030, destination: masterIn });
+          makeNoise(ctx, { start: t, duration: 0.014, gain: 0.008, highpass: 1800, destination: masterIn });
           break;
         default:
-          makeTone(ctx, { freq: 960, type: "triangle", start: t, duration: 0.030, gain: 0.030, decay: 0.030 });
-          makeTone(ctx, { freq: 680, type: "sine", start: t + 0.012, duration: 0.028, gain: 0.015, decay: 0.028 });
+          makeTone(ctx, { freq: 960, type: "triangle", start: t, duration: 0.030, gain: 0.060, decay: 0.030, destination: masterIn });
+          makeTone(ctx, { freq: 680, type: "sine", start: t + 0.012, duration: 0.028, gain: 0.030, decay: 0.028, destination: masterIn });
       }
+
+      setTimeout(() => {
+        master.disconnect();
+      }, 120);
     }
 
     function playHit() {
@@ -1821,25 +2065,32 @@
       const ctx = getAudioCtx();
       const t = ctx.currentTime + 0.001;
 
+      const masterIn = ctx.createGain();
+      const master = createMaster(masterIn, 1.15);
+
       switch (missSoundType) {
         case "same":
           playCurrentHitPreview();
           break;
         case "miss1":
-          makeTone(ctx, { freq: 260, type: "sawtooth", start: t, duration: 0.060, gain: 0.022, decay: 0.060, endFreq: 180 });
-          makeTone(ctx, { freq: 170, type: "triangle", start: t + 0.015, duration: 0.050, gain: 0.012, decay: 0.050, endFreq: 120 });
+          makeTone(ctx, { freq: 260, type: "sawtooth", start: t, duration: 0.060, gain: 0.028, decay: 0.060, endFreq: 180, destination: masterIn });
+          makeTone(ctx, { freq: 170, type: "triangle", start: t + 0.015, duration: 0.050, gain: 0.016, decay: 0.050, endFreq: 120, destination: masterIn });
           break;
         case "miss2":
-          makeTone(ctx, { freq: 190, type: "square", start: t, duration: 0.070, gain: 0.020, decay: 0.070 });
-          makeTone(ctx, { freq: 150, type: "sine", start: t + 0.020, duration: 0.060, gain: 0.010, decay: 0.060 });
+          makeTone(ctx, { freq: 190, type: "square", start: t, duration: 0.070, gain: 0.026, decay: 0.070, destination: masterIn });
+          makeTone(ctx, { freq: 150, type: "sine", start: t + 0.020, duration: 0.060, gain: 0.015, decay: 0.060, destination: masterIn });
           break;
         case "miss3":
-          makeTone(ctx, { freq: 420, type: "triangle", start: t, duration: 0.020, gain: 0.016, decay: 0.020 });
-          makeTone(ctx, { freq: 230, type: "sawtooth", start: t + 0.010, duration: 0.070, gain: 0.018, decay: 0.070, endFreq: 140 });
+          makeTone(ctx, { freq: 420, type: "triangle", start: t, duration: 0.020, gain: 0.022, decay: 0.020, destination: masterIn });
+          makeTone(ctx, { freq: 230, type: "sawtooth", start: t + 0.010, duration: 0.070, gain: 0.022, decay: 0.070, endFreq: 140, destination: masterIn });
           break;
         case "mute":
           break;
       }
+
+      setTimeout(() => {
+        master.disconnect();
+      }, 130);
     }
 
     function playMiss() {
@@ -1856,6 +2107,11 @@
           await ensureAudioRunning();
         } catch (_) {}
       }
+    });
+
+    themeSelect.addEventListener("change", () => {
+      applyTheme(themeSelect.value);
+      updateKeyboard();
     });
 
     soundTypeSelect.addEventListener("change", async () => {
@@ -1900,6 +2156,7 @@
 
     speechSynthesis.onvoiceschanged = () => {};
 
+    applyTheme(currentTheme);
     createKeyboard();
     updateStats();
     renderQuestion();
