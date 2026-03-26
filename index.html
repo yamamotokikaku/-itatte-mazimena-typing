@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@500;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@500;700;800;900&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -241,6 +241,12 @@
 
     .select {
       outline: none;
+      appearance: auto;
+    }
+
+    .select option {
+      background: #07111f;
+      color: #ecfbff;
     }
 
     .main {
@@ -350,16 +356,20 @@
       font-size: clamp(22px, 2.2vw, 34px);
       font-weight: 900;
       line-height: 1.28;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       text-align: center;
       white-space: pre-wrap;
       word-break: break-word;
       color: #f5fdff;
       text-shadow:
-        0 0 8px rgba(255,255,255,0.1),
-        0 0 14px rgba(0,247,255,0.2),
-        0 0 28px rgba(255,31,209,0.12);
-      font-family: "Noto Sans JP", sans-serif;
+        0 0 8px rgba(255,255,255,0.08),
+        0 0 14px rgba(0,247,255,0.14),
+        0 0 24px rgba(255,31,209,0.08);
+      font-family:
+        "Zen Kaku Gothic New",
+        "Noto Sans JP",
+        sans-serif;
+      font-feature-settings: "palt" 1;
     }
 
     .kana {
@@ -1826,51 +1836,81 @@
       return audioCtx;
     }
 
-    function simpleBeep({ frequency = 700, duration = 0.03, type = "triangle", gain = 0.02 }) {
-      if (!soundOn) return;
+    function ensureAudioRunning() {
       const ctx = getAudioCtx();
+      if (ctx.state === "suspended") {
+        return ctx.resume();
+      }
+      return Promise.resolve();
+    }
+
+    function makeTone(ctx, {
+      freq = 440,
+      type = "sine",
+      start = 0,
+      duration = 0.05,
+      gain = 0.02,
+      attack = 0.002,
+      decay = 0.05,
+      endFreq = null
+    }) {
       const osc = ctx.createOscillator();
       const amp = ctx.createGain();
 
       osc.type = type;
-      osc.frequency.setValueAtTime(frequency, ctx.currentTime);
-      amp.gain.setValueAtTime(gain, ctx.currentTime);
-      amp.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      osc.frequency.setValueAtTime(freq, start);
+      if (endFreq !== null) {
+        osc.frequency.exponentialRampToValueAtTime(
+          Math.max(1, endFreq),
+          start + duration
+        );
+      }
+
+      amp.gain.setValueAtTime(0.0001, start);
+      amp.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), start + attack);
+      amp.gain.exponentialRampToValueAtTime(0.0001, start + Math.max(attack + 0.001, decay));
 
       osc.connect(amp);
       amp.connect(ctx.destination);
 
-      osc.start();
-      osc.stop(ctx.currentTime + duration);
-    }
-
-    function kotoTap(freq1, freq2, dur1, dur2, gain1, gain2, type1 = "triangle", type2 = "sine", delay = 0.012) {
-      if (!soundOn) return;
-      simpleBeep({ frequency: freq1, duration: dur1, type: type1, gain: gain1 });
-      setTimeout(() => {
-        simpleBeep({ frequency: freq2, duration: dur2, type: type2, gain: gain2 });
-      }, delay * 1000);
+      osc.start(start);
+      osc.stop(start + duration);
     }
 
     function playCurrentHitPreview() {
+      if (!soundOn) return;
+      const ctx = getAudioCtx();
+      const t = ctx.currentTime + 0.001;
+
       switch (soundType) {
         case "koto1":
-          kotoTap(720, 520, 0.024, 0.02, 0.02, 0.01, "triangle", "sine", 0.012);
+          makeTone(ctx, { freq: 960, type: "triangle", start: t, duration: 0.030, gain: 0.030, decay: 0.030 });
+          makeTone(ctx, { freq: 680, type: "sine", start: t + 0.012, duration: 0.028, gain: 0.015, decay: 0.028 });
           break;
+
         case "koto2":
-          kotoTap(650, 430, 0.03, 0.024, 0.022, 0.011, "triangle", "triangle", 0.016);
+          makeTone(ctx, { freq: 560, type: "triangle", start: t, duration: 0.050, gain: 0.030, decay: 0.050 });
+          makeTone(ctx, { freq: 410, type: "triangle", start: t + 0.018, duration: 0.040, gain: 0.016, decay: 0.040 });
           break;
+
         case "koto3":
-          kotoTap(820, 560, 0.018, 0.018, 0.018, 0.009, "square", "triangle", 0.01);
+          makeTone(ctx, { freq: 1320, type: "square", start: t, duration: 0.018, gain: 0.018, decay: 0.018 });
+          makeTone(ctx, { freq: 880, type: "triangle", start: t + 0.008, duration: 0.022, gain: 0.014, decay: 0.022 });
           break;
+
         case "koto4":
-          kotoTap(560, 360, 0.032, 0.028, 0.022, 0.012, "sine", "triangle", 0.014);
+          makeTone(ctx, { freq: 430, type: "sine", start: t, duration: 0.060, gain: 0.032, decay: 0.060 });
+          makeTone(ctx, { freq: 320, type: "triangle", start: t + 0.016, duration: 0.040, gain: 0.014, decay: 0.040 });
           break;
+
         case "koto5":
-          kotoTap(930, 650, 0.016, 0.014, 0.016, 0.008, "triangle", "sine", 0.008);
+          makeTone(ctx, { freq: 1500, type: "triangle", start: t, duration: 0.014, gain: 0.020, decay: 0.014 });
+          makeTone(ctx, { freq: 980, type: "sine", start: t + 0.006, duration: 0.018, gain: 0.010, decay: 0.018 });
           break;
+
         default:
-          kotoTap(720, 520, 0.024, 0.02, 0.02, 0.01);
+          makeTone(ctx, { freq: 960, type: "triangle", start: t, duration: 0.030, gain: 0.030, decay: 0.030 });
+          makeTone(ctx, { freq: 680, type: "sine", start: t + 0.012, duration: 0.028, gain: 0.015, decay: 0.028 });
       }
     }
 
@@ -1879,35 +1919,36 @@
     }
 
     function playMissSpecific() {
+      if (!soundOn) return;
+      const ctx = getAudioCtx();
+      const t = ctx.currentTime + 0.001;
+
       switch (missSoundType) {
         case "same":
           playCurrentHitPreview();
           break;
+
         case "miss1":
-          simpleBeep({ frequency: 220, duration: 0.05, type: "sawtooth", gain: 0.018 });
-          setTimeout(() => {
-            simpleBeep({ frequency: 170, duration: 0.04, type: "triangle", gain: 0.01 });
-          }, 12);
+          makeTone(ctx, { freq: 260, type: "sawtooth", start: t, duration: 0.060, gain: 0.022, decay: 0.060, endFreq: 180 });
+          makeTone(ctx, { freq: 170, type: "triangle", start: t + 0.015, duration: 0.050, gain: 0.012, decay: 0.050, endFreq: 120 });
           break;
+
         case "miss2":
-          simpleBeep({ frequency: 190, duration: 0.06, type: "square", gain: 0.016 });
-          setTimeout(() => {
-            simpleBeep({ frequency: 140, duration: 0.03, type: "sine", gain: 0.008 });
-          }, 14);
+          makeTone(ctx, { freq: 190, type: "square", start: t, duration: 0.070, gain: 0.020, decay: 0.070 });
+          makeTone(ctx, { freq: 150, type: "sine", start: t + 0.020, duration: 0.060, gain: 0.010, decay: 0.060 });
           break;
+
         case "miss3":
-          simpleBeep({ frequency: 260, duration: 0.025, type: "triangle", gain: 0.016 });
-          setTimeout(() => {
-            simpleBeep({ frequency: 180, duration: 0.05, type: "sawtooth", gain: 0.012 });
-          }, 8);
+          makeTone(ctx, { freq: 420, type: "triangle", start: t, duration: 0.020, gain: 0.016, decay: 0.020 });
+          makeTone(ctx, { freq: 230, type: "sawtooth", start: t + 0.010, duration: 0.070, gain: 0.018, decay: 0.070, endFreq: 140 });
           break;
+
         case "mute":
           break;
       }
     }
 
     function playMiss() {
-      if (!soundOn) return;
       playMissSpecific();
     }
 
@@ -1918,37 +1959,43 @@
       soundBtn.textContent = `音あり: ${soundOn ? "ON" : "OFF"}`;
       if (soundOn) {
         try {
-          const ctx = getAudioCtx();
-          if (ctx.state === "suspended") {
-            await ctx.resume();
-          }
+          await ensureAudioRunning();
         } catch (_) {}
       }
     });
 
-    soundTypeSelect.addEventListener("change", () => {
+    soundTypeSelect.addEventListener("change", async () => {
       soundType = soundTypeSelect.value;
       if (soundOn) {
-        playHit();
+        try {
+          await ensureAudioRunning();
+          playHit();
+        } catch (_) {}
       }
     });
 
-    missSoundTypeSelect.addEventListener("change", () => {
+    missSoundTypeSelect.addEventListener("change", async () => {
       missSoundType = missSoundTypeSelect.value;
       if (soundOn) {
-        playMiss();
+        try {
+          await ensureAudioRunning();
+          playMiss();
+        } catch (_) {}
       }
     });
 
     window.addEventListener("keydown", async (e) => {
       try {
-        const ctx = getAudioCtx();
-        if (ctx.state === "suspended") {
-          await ctx.resume();
-        }
+        await ensureAudioRunning();
       } catch (_) {}
       handleKeydown(e);
     });
+
+    window.addEventListener("pointerdown", async () => {
+      try {
+        await ensureAudioRunning();
+      } catch (_) {}
+    }, { once: false });
 
     createKeyboard();
     updateStats();
