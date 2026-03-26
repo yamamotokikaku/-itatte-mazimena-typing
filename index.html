@@ -475,7 +475,7 @@
       </div>
 
       <div class="stats">
-        <div class="chip">問題数: <span id="count">0</span></div>
+        <div class="chip">打鍵数: <span id="count">0</span></div>
         <div class="chip">正解数: <span id="correct">0</span></div>
         <div class="chip">ミス: <span id="miss">0</span></div>
         <div class="chip">正解率: <span id="accuracy">0</span>%</div>
@@ -584,7 +584,7 @@
       [
         { top: "esc", width: "w-68", className: "single" },
         { top: "1", bottom: "!", code: "1" },
-        { top: "2", bottom: "\"" , code: "2" },
+        { top: "2", bottom: "\"", code: "2" },
         { top: "3", bottom: "#", code: "3" },
         { top: "4", bottom: "$", code: "4" },
         { top: "5", bottom: "%", code: "5" },
@@ -1235,8 +1235,6 @@
       updateKeyboard();
 
       if (isQuestionComplete()) {
-        correctCount++;
-        updateStats();
         nextQuestionTimer = setTimeout(() => {
           nextQuestion();
         }, 180);
@@ -1320,6 +1318,7 @@
 
     function handleCorrectKey(key) {
       totalCount++;
+      correctCount++;
       lastHitKey = key;
       playHit();
       applyKeyToState(key);
@@ -1327,6 +1326,7 @@
     }
 
     function handleWrongKey() {
+      totalCount++;
       missCount++;
       updateStats();
       playMiss();
