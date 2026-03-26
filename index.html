@@ -576,6 +576,8 @@
     let lastHitKey = "";
 
     let activeState = null;
+    let ambiguousCommitTimer = null;
+    let nextQuestionTimer = null;
 
     function shuffle(arr) {
       const copy = [...arr];
@@ -587,6 +589,17 @@
     }
 
     let order = shuffle(questions);
+
+    function clearTimers() {
+      if (ambiguousCommitTimer) {
+        clearTimeout(ambiguousCommitTimer);
+        ambiguousCommitTimer = null;
+      }
+      if (nextQuestionTimer) {
+        clearTimeout(nextQuestionTimer);
+        nextQuestionTimer = null;
+      }
+    }
 
     function createKeyboard() {
       keyboard.innerHTML = "";
@@ -765,6 +778,19 @@
       return map[unit] ? unique(map[unit]) : [unit];
     }
 
+    function getLeadingConsonantsForSokuon(nextUnit) {
+      const nextPatterns = getUnitPatterns(nextUnit).filter(p => p !== "__SOKUON__");
+      const result = [];
+
+      nextPatterns.forEach(p => {
+        if (!p) return;
+        if (/^[aeiou]/.test(p)) return;
+        result.push(p[0]);
+      });
+
+      return unique(result);
+    }
+
     function getDisplayRomaForUnit(unit) {
       const displayMap = {
         "あ": "A",
@@ -913,15 +939,9 @@
 
         if (unit === sokuon) {
           const nextUnit = units[i + 1] || "";
-          const nextPatterns = getUnitPatterns(nextUnit).filter(p => p !== "__SOKUON__");
-          const doubled = unique(
-            nextPatterns
-              .filter(p => /^[a-z]/.test(p))
-              .map(p => p[0] + p)
-          );
-
-          patterns.push(doubled.length ? doubled : [""]);
-          displayRomaUnits.push(doubled.length ? doubled[0].charAt(0).toUpperCase() : "");
+          const sokuonPatterns = getLeadingConsonantsForSokuon(nextUnit);
+          patterns.push(sokuonPatterns.length ? sokuonPatterns : [""]);
+          displayRomaUnits.push(sokuonPatterns.length ? sokuonPatterns[0].toUpperCase() : "");
           continue;
         }
 
@@ -1014,6 +1034,7 @@
     }
 
     function renderQuestion() {
+      clearTimers();
       const q = getCurrentQuestion();
       activeState = buildQuestionState(q);
 
@@ -1063,7 +1084,38 @@
       message.innerHTML = html;
     }
 
+    function isQuestionComplete() {
+      return activeState && activeState.unitIndex >= activeState.patterns.length;
+    }
+
+    function finalizeCurrentUnit() {
+      if (!activeState) return;
+      activeState.unitIndex++;
+      activeState.unitTyped = "";
+      renderRomanProgress();
+      updateKeyboard();
+
+      if (isQuestionComplete()) {
+        correctCount++;
+        updateStats();
+        nextQuestionTimer = setTimeout(() => {
+          nextQuestion();
+        }, 180);
+      }
+    }
+
+    function scheduleAmbiguousCommit() {
+      if (ambiguousCommitTimer) {
+        clearTimeout(ambiguousCommitTimer);
+      }
+      ambiguousCommitTimer = setTimeout(() => {
+        ambiguousCommitTimer = null;
+        finalizeCurrentUnit();
+      }, 220);
+    }
+
     function nextQuestion() {
+      clearTimers();
       currentIndex++;
       if (currentIndex >= order.length) {
         order = shuffle(questions);
@@ -1074,6 +1126,7 @@
     }
 
     function resetAll() {
+      clearTimers();
       totalCount = 0;
       correctCount = 0;
       missCount = 0;
@@ -1084,28 +1137,43 @@
       setMessage("<strong>リセットしました。</strong> 最初から始められます。");
     }
 
-    function isQuestionComplete() {
-      return activeState && activeState.unitIndex >= activeState.patterns.length;
-    }
-
-    function tryAdvanceWithKey(key) {
+    function tryAdvanceWithKeyPreview(key) {
       if (!activeState || isQuestionComplete()) return false;
 
       const currentTyped = activeState.unitTyped + key;
       const patterns = getCurrentUnitPatterns();
-      const matchedPrefixes = patterns.filter(p => p.startsWith(currentTyped));
+      return patterns.some(p => p.startsWith(currentTyped));
+    }
+
+    function applyKeyToState(key) {
+      const patterns = getCurrentUnitPatterns();
+      const nextTyped = activeState.unitTyped + key;
+      const matchedPrefixes = patterns.filter(p => p.startsWith(nextTyped));
 
       if (!matchedPrefixes.length) {
         return false;
       }
 
-      activeState.unitTyped = currentTyped;
+      if (ambiguousCommitTimer) {
+        clearTimeout(ambiguousCommitTimer);
+        ambiguousCommitTimer = null;
+      }
+
+      activeState.unitTyped = nextTyped;
       activeState.rawTyped += key;
 
-      const exactMatch = patterns.some(p => p === currentTyped);
-      if (exactMatch) {
-        activeState.unitIndex++;
-        activeState.unitTyped = "";
+      const exactMatch = patterns.some(p => p === nextTyped);
+      const hasLongerMatch = patterns.some(p => p.startsWith(nextTyped) && p.length > nextTyped.length);
+
+      if (exactMatch && !hasLongerMatch) {
+        finalizeCurrentUnit();
+      } else if (exactMatch && hasLongerMatch) {
+        renderRomanProgress();
+        updateKeyboard();
+        scheduleAmbiguousCommit();
+      } else {
+        renderRomanProgress();
+        updateKeyboard();
       }
 
       return true;
@@ -1115,19 +1183,8 @@
       totalCount++;
       lastHitKey = key;
       playHit();
-
-      tryAdvanceWithKey(key);
-      renderRomanProgress();
-      updateKeyboard();
+      applyKeyToState(key);
       updateStats();
-
-      if (isQuestionComplete()) {
-        correctCount++;
-        updateStats();
-        setTimeout(() => {
-          nextQuestion();
-        }, 180);
-      }
     }
 
     function handleWrongKey() {
@@ -1158,13 +1215,6 @@
       } else {
         handleWrongKey();
       }
-    }
-
-    function tryAdvanceWithKeyPreview(key) {
-      if (!activeState || isQuestionComplete()) return false;
-      const currentTyped = activeState.unitTyped + key;
-      const patterns = getCurrentUnitPatterns();
-      return patterns.some(p => p.startsWith(currentTyped));
     }
 
     let audioCtx = null;
