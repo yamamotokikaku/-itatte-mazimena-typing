@@ -21,10 +21,12 @@
       --accent2: #ff9ccf;
       --good: #44b97f;
       --bad: #ff6b7a;
-      --key: #ffffff;
-      --keyText: #3b3750;
+      --key: #fbfbfd;
+      --keyText: #2f3340;
+      --keyBorder: #cfd3dc;
+      --keyBorderDark: #b8bec9;
       --keyActive: #8b80ff;
-      --keyNext: #ffd76a;
+      --keyNext: #ffe28b;
       --shadow: 0 14px 40px rgba(111, 90, 180, 0.14);
       --mutedRoma: #b6b1c8;
     }
@@ -57,7 +59,7 @@
     }
 
     .app {
-      width: min(1200px, 100%);
+      width: min(1180px, 100%);
       height: min(92vh, 900px);
       display: grid;
       grid-template-rows: auto 1fr;
@@ -146,8 +148,8 @@
     .centerPanel {
       display: grid;
       grid-template-rows: auto 1fr;
-      gap: 14px;
-      padding: 16px;
+      gap: 12px;
+      padding: 14px;
       min-height: 0;
       position: relative;
       overflow: hidden;
@@ -167,10 +169,10 @@
     .questionCard {
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.64);
-      border-radius: 26px;
-      padding: 18px 20px;
+      border-radius: 24px;
+      padding: 14px 18px;
       display: grid;
-      gap: 10px;
+      gap: 8px;
       position: relative;
       z-index: 1;
     }
@@ -178,66 +180,45 @@
     .qTop {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 12px;
       flex-wrap: wrap;
     }
 
     .qCount {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--sub);
       letter-spacing: 0.08em;
     }
 
-    .nextMini {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--sub);
-    }
-
-    .nextMini strong {
-      color: var(--accent);
-      font-size: 20px;
-      line-height: 1;
-      min-width: 20px;
-      text-align: center;
-    }
-
     .jp {
-      font-size: clamp(30px, 4.2vw, 62px);
+      font-size: clamp(22px, 2.8vw, 40px);
       font-weight: 900;
-      line-height: 1.15;
-      letter-spacing: 0.06em;
+      line-height: 1.12;
+      letter-spacing: 0.05em;
       text-align: center;
-      margin-top: 2px;
+      margin-top: 0;
       white-space: pre-wrap;
       word-break: keep-all;
     }
 
     .kana {
       text-align: center;
-      font-size: clamp(18px, 2vw, 28px);
+      font-size: clamp(14px, 1.4vw, 21px);
       font-weight: 800;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       color: var(--sub);
-      min-height: 1.4em;
+      min-height: 1.3em;
     }
 
     .roman {
       text-align: center;
-      font-size: clamp(20px, 2.6vw, 36px);
+      font-size: clamp(17px, 1.9vw, 28px);
       font-weight: 900;
-      letter-spacing: 0.12em;
-      line-height: 1.4;
-      min-height: 1.4em;
+      letter-spacing: 0.1em;
+      line-height: 1.35;
+      min-height: 1.35em;
       word-break: break-word;
     }
 
@@ -255,13 +236,13 @@
 
     .roman .caret {
       display: inline-block;
-      width: 10px;
-      height: 1.05em;
-      margin: 0 3px;
+      width: 8px;
+      height: 0.96em;
+      margin: 0 2px;
       border-radius: 999px;
       background: var(--accent2);
       animation: blink 0.8s steps(1) infinite;
-      vertical-align: -0.12em;
+      vertical-align: -0.1em;
     }
 
     @keyframes blink {
@@ -270,49 +251,100 @@
 
     .keyboardWrap {
       border: 1px solid var(--line);
-      background: rgba(255,255,255,0.58);
-      border-radius: 24px;
-      padding: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.66), rgba(247,248,252,0.72));
+      border-radius: 22px;
+      padding: 12px 12px 14px;
       display: grid;
-      gap: 8px;
+      gap: 6px;
       min-height: 0;
-      align-content: start;
+      align-content: center;
+      justify-content: center;
       position: relative;
       z-index: 1;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.8),
+        inset 0 -1px 0 rgba(210,214,224,0.55);
     }
 
     .kbRow {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       justify-content: center;
     }
 
     .key {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      border: 1px solid rgba(90, 90, 120, 0.12);
-      background: var(--key);
+      width: 44px;
+      height: 38px;
+      border-radius: 9px;
+      border: 1px solid var(--keyBorder);
+      border-bottom-color: var(--keyBorderDark);
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f2f4f8 100%);
       color: var(--keyText);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      font-weight: 900;
-      font-size: 18px;
-      box-shadow: 0 8px 18px rgba(83, 72, 130, 0.08);
-      transition: transform 0.08s ease, background 0.12s ease, color 0.12s ease;
+      padding-top: 7px;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.95) inset,
+        0 2px 0 rgba(198,203,214,0.9),
+        0 4px 10px rgba(60, 68, 96, 0.08);
+      transition: transform 0.08s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
       user-select: none;
+      position: relative;
+    }
+
+    .key::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 -10px 12px rgba(190,198,214,0.08);
+      pointer-events: none;
     }
 
     .key.next {
-      background: var(--keyNext);
-      transform: translateY(-2px);
+      background:
+        linear-gradient(180deg, #fff4bc 0%, var(--keyNext) 100%);
+      transform: translateY(-1px);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.95) inset,
+        0 2px 0 rgba(212,191,122,0.95),
+        0 4px 10px rgba(60, 68, 96, 0.1);
     }
 
     .key.hit {
-      background: var(--keyActive);
+      background:
+        linear-gradient(180deg, #9f97ff 0%, var(--keyActive) 100%);
       color: white;
-      transform: scale(0.96);
+      transform: translateY(1px) scale(0.98);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.22) inset,
+        0 1px 0 rgba(92,77,190,0.9),
+        0 2px 6px rgba(60, 68, 96, 0.12);
+    }
+
+    .key.wide-tab { width: 68px; justify-content: flex-start; padding-left: 10px; }
+    .key.caps { width: 78px; justify-content: flex-start; padding-left: 10px; }
+    .key.shift { width: 96px; justify-content: flex-start; padding-left: 10px; }
+    .key.delete { width: 72px; justify-content: flex-end; padding-right: 10px; }
+    .key.return { width: 78px; justify-content: flex-end; padding-right: 10px; }
+    .key.space {
+      width: 290px;
+      justify-content: center;
+      padding-top: 0;
+      align-items: center;
+      font-size: 12px;
+      color: #747b8c;
+    }
+    .key.cmd, .key.opt, .key.ctrl, .key.fn {
+      width: 54px;
+      font-size: 10px;
+      color: #6f7584;
+      padding-top: 9px;
     }
 
     .shake {
@@ -346,31 +378,50 @@
         justify-content: flex-start;
         margin-left: 0;
       }
+
+      .keyboardWrap {
+        align-content: start;
+        overflow: auto;
+      }
     }
 
     @media (max-width: 640px) {
-      .key {
-        width: 42px;
-        height: 44px;
-        border-radius: 12px;
-        font-size: 15px;
-      }
-
       .jp {
-        font-size: 34px;
+        font-size: 26px;
       }
 
       .kana {
-        font-size: 19px;
+        font-size: 15px;
       }
 
       .roman {
-        font-size: 21px;
-      }
-
-      .nextMini strong {
         font-size: 18px;
       }
+
+      .keyboardWrap {
+        padding: 10px;
+        gap: 5px;
+      }
+
+      .kbRow {
+        gap: 5px;
+      }
+
+      .key {
+        width: 32px;
+        height: 30px;
+        border-radius: 7px;
+        font-size: 10px;
+        padding-top: 6px;
+      }
+
+      .key.wide-tab { width: 48px; padding-left: 7px; }
+      .key.caps { width: 56px; padding-left: 7px; }
+      .key.shift { width: 68px; padding-left: 7px; }
+      .key.delete { width: 54px; padding-right: 7px; }
+      .key.return { width: 56px; padding-right: 7px; }
+      .key.cmd, .key.opt, .key.ctrl, .key.fn { width: 38px; font-size: 8px; padding-top: 7px; }
+      .key.space { width: 170px; font-size: 10px; }
     }
   </style>
 </head>
@@ -379,7 +430,6 @@
     <div class="controlsBar">
       <div class="controls">
         <button class="btn" id="resetBtn">リセット</button>
-        <button class="btn" id="nextBtn">次の問題</button>
         <button class="btn" id="soundBtn">音あり: ON</button>
         <select class="select" id="modeSelect">
           <option value="basic">基本問題</option>
@@ -398,8 +448,7 @@
       <section class="panel centerPanel" id="questionPanel">
         <div class="questionCard">
           <div class="qTop">
-            <div class="qCount">QUESTION <span id="qNumber">1</span></div>
-            <div class="nextMini">つぎに押すキー <strong id="nextKeyView">A</strong></div>
+            <div class="qCount"><span id="qNumber">1</span></div>
           </div>
           <div class="jp" id="jpText">合図</div>
           <div class="kana" id="kanaText">あいず</div>
@@ -456,9 +505,31 @@
     ];
 
     const keyboardRows = [
-      ["Q","W","E","R","T","Y","U","I","O","P"],
-      ["A","S","D","F","G","H","J","K","L"],
-      ["Z","X","C","V","B","N","M"]
+      [
+        { label: "Q", code: "Q" }, { label: "W", code: "W" }, { label: "E", code: "E" }, { label: "R", code: "R" },
+        { label: "T", code: "T" }, { label: "Y", code: "Y" }, { label: "U", code: "U" }, { label: "I", code: "I" },
+        { label: "O", code: "O" }, { label: "P", code: "P" }, { label: "delete", className: "delete" }
+      ],
+      [
+        { label: "tab", className: "wide-tab" },
+        { label: "A", code: "A" }, { label: "S", code: "S" }, { label: "D", code: "D" }, { label: "F", code: "F" },
+        { label: "G", code: "G" }, { label: "H", code: "H" }, { label: "J", code: "J" }, { label: "K", code: "K" },
+        { label: "L", code: "L" }, { label: "return", className: "return" }
+      ],
+      [
+        { label: "shift", className: "shift" },
+        { label: "Z", code: "Z" }, { label: "X", code: "X" }, { label: "C", code: "C" }, { label: "V", code: "V" },
+        { label: "B", code: "B" }, { label: "N", code: "N" }, { label: "M", code: "M" }, { label: "shift", className: "shift" }
+      ],
+      [
+        { label: "fn", className: "fn" },
+        { label: "ctrl", className: "ctrl" },
+        { label: "opt", className: "opt" },
+        { label: "cmd", className: "cmd" },
+        { label: "", className: "space" },
+        { label: "cmd", className: "cmd" },
+        { label: "opt", className: "opt" }
+      ]
     ];
 
     const smallKanaSet = new Set(["ゃ","ゅ","ょ","ぁ","ぃ","ぅ","ぇ","ぉ"]);
@@ -468,7 +539,6 @@
     const jpText = document.getElementById("jpText");
     const kanaText = document.getElementById("kanaText");
     const romanText = document.getElementById("romanText");
-    const nextKeyView = document.getElementById("nextKeyView");
     const countEl = document.getElementById("count");
     const correctEl = document.getElementById("correct");
     const missEl = document.getElementById("miss");
@@ -476,7 +546,6 @@
     const qNumberEl = document.getElementById("qNumber");
     const keyboard = document.getElementById("keyboard");
     const resetBtn = document.getElementById("resetBtn");
-    const nextBtn = document.getElementById("nextBtn");
     const soundBtn = document.getElementById("soundBtn");
 
     let currentIndex = 0;
@@ -514,16 +583,27 @@
 
     function createKeyboard() {
       keyboard.innerHTML = "";
+
       keyboardRows.forEach(row => {
         const rowEl = document.createElement("div");
         rowEl.className = "kbRow";
-        row.forEach(key => {
+
+        row.forEach(keyData => {
           const keyEl = document.createElement("div");
           keyEl.className = "key";
-          keyEl.dataset.key = key;
-          keyEl.textContent = key;
+
+          if (keyData.className) {
+            keyEl.classList.add(keyData.className);
+          }
+
+          if (keyData.code) {
+            keyEl.dataset.key = keyData.code;
+          }
+
+          keyEl.textContent = keyData.label;
           rowEl.appendChild(keyEl);
         });
+
         keyboard.appendChild(rowEl);
       });
     }
@@ -958,7 +1038,7 @@
     }
 
     function updateKeyboard() {
-      const keys = document.querySelectorAll(".key");
+      const keys = document.querySelectorAll(".key[data-key]");
       const target = getNextExpectedKey();
 
       keys.forEach(el => {
@@ -971,13 +1051,11 @@
         }
       });
 
-      nextKeyView.textContent = target ? target.toUpperCase() : "✓";
-
       setTimeout(() => {
         lastHitKey = "";
-        document.querySelectorAll(".key").forEach(el => el.classList.remove("hit"));
+        document.querySelectorAll(".key[data-key]").forEach(el => el.classList.remove("hit"));
         const target2 = getNextExpectedKey();
-        document.querySelectorAll(".key").forEach(el => {
+        document.querySelectorAll(".key[data-key]").forEach(el => {
           if (target2 && el.dataset.key === target2.toUpperCase()) {
             el.classList.add("next");
           }
@@ -1175,10 +1253,6 @@
     }
 
     resetBtn.addEventListener("click", resetAll);
-
-    nextBtn.addEventListener("click", () => {
-      nextQuestion();
-    });
 
     soundBtn.addEventListener("click", async () => {
       soundOn = !soundOn;
