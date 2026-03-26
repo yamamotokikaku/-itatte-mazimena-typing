@@ -60,11 +60,11 @@
       width: min(1200px, 100%);
       height: min(92vh, 900px);
       display: grid;
-      grid-template-rows: auto auto 1fr auto;
+      grid-template-rows: auto 1fr;
       gap: 14px;
     }
 
-    .topbar {
+    .controlsBar {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -75,23 +75,14 @@
       padding: 14px 18px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
+      flex-wrap: wrap;
     }
 
-    .titleWrap {
+    .controls {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .title {
-      font-size: clamp(20px, 2.3vw, 30px);
-      font-weight: 900;
-      letter-spacing: 0.06em;
-    }
-
-    .subtitle {
-      font-size: 13px;
-      color: var(--sub);
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     .stats {
@@ -99,6 +90,8 @@
       gap: 10px;
       flex-wrap: wrap;
       justify-content: flex-end;
+      align-items: center;
+      margin-left: auto;
     }
 
     .chip {
@@ -110,12 +103,6 @@
       font-weight: 700;
       color: var(--keyText);
       white-space: nowrap;
-    }
-
-    .controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
     }
 
     .btn, .select {
@@ -158,7 +145,7 @@
 
     .centerPanel {
       display: grid;
-      grid-template-rows: auto auto 1fr auto;
+      grid-template-rows: auto 1fr;
       gap: 14px;
       padding: 16px;
       min-height: 0;
@@ -328,61 +315,6 @@
       transform: scale(0.96);
     }
 
-    .guide {
-      background: rgba(255,255,255,0.65);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 14px;
-      display: grid;
-      gap: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .guideRow {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 14px;
-      color: var(--sub);
-      font-weight: 700;
-    }
-
-    .guideRow strong {
-      color: var(--text);
-    }
-
-    .bottom {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      align-items: stretch;
-    }
-
-    .message {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 14px 18px;
-      box-shadow: var(--shadow);
-      font-weight: 800;
-      color: var(--sub);
-      min-height: 56px;
-      display: flex;
-      align-items: center;
-    }
-
-    .message strong {
-      color: var(--text);
-    }
-
-    .footerBtns {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
     .shake {
       animation: shake 0.2s linear;
     }
@@ -406,12 +338,13 @@
         min-height: calc(100vh - 32px);
       }
 
-      .bottom {
-        grid-template-columns: 1fr;
+      .controlsBar {
+        align-items: flex-start;
       }
 
-      .footerBtns {
+      .stats {
         justify-content: flex-start;
+        margin-left: 0;
       }
     }
 
@@ -443,25 +376,22 @@
 </head>
 <body>
   <div class="app" id="app">
-    <div class="topbar">
-      <div class="titleWrap">
-        <div class="title">タイピング練習サイト</div>
-        <div class="subtitle">漢字かなまじり → 読み → ローマ字で入力</div>
+    <div class="controlsBar">
+      <div class="controls">
+        <button class="btn" id="resetBtn">リセット</button>
+        <button class="btn" id="nextBtn">次の問題</button>
+        <button class="btn" id="soundBtn">音あり: ON</button>
+        <select class="select" id="modeSelect">
+          <option value="basic">基本問題</option>
+        </select>
       </div>
+
       <div class="stats">
         <div class="chip">問題数: <span id="count">0</span></div>
         <div class="chip">正解数: <span id="correct">0</span></div>
         <div class="chip">ミス: <span id="miss">0</span></div>
+        <div class="chip">正解率: <span id="accuracy">0</span>%</div>
       </div>
-    </div>
-
-    <div class="controls">
-      <button class="btn" id="resetBtn">リセット</button>
-      <button class="btn" id="nextBtn">次の問題</button>
-      <button class="btn" id="soundBtn">音あり: ON</button>
-      <select class="select" id="modeSelect">
-        <option value="basic">基本問題</option>
-      </select>
     </div>
 
     <div class="main">
@@ -477,24 +407,7 @@
         </div>
 
         <div class="keyboardWrap" id="keyboard"></div>
-
-        <div class="guide">
-          <div class="guideRow"><span>入力方式</span><strong>ヘボン式 / 訓令式 / 日本式</strong></div>
-          <div class="guideRow"><span>「ん」</span><strong>N でも NN でも正解</strong></div>
-          <div class="guideRow"><span>次の問題</span><strong>正解で自動</strong></div>
-          <div class="guideRow"><span>リセット</span><strong>Enter</strong></div>
-          <div class="guideRow"><span>ミスタイプ</span><strong>画面が揺れる</strong></div>
-        </div>
       </section>
-    </div>
-
-    <div class="bottom">
-      <div class="message" id="message">
-        <strong>準備完了。</strong> そのままキーボードを打って始めてください。
-      </div>
-      <div class="footerBtns">
-        <button class="btn" id="focusBtn">入力開始</button>
-      </div>
     </div>
   </div>
 
@@ -551,22 +464,20 @@
     const smallKanaSet = new Set(["ゃ","ゅ","ょ","ぁ","ぃ","ぅ","ぇ","ぉ"]);
     const sokuon = "っ";
 
-    const app = document.getElementById("app");
     const questionPanel = document.getElementById("questionPanel");
     const jpText = document.getElementById("jpText");
     const kanaText = document.getElementById("kanaText");
     const romanText = document.getElementById("romanText");
     const nextKeyView = document.getElementById("nextKeyView");
-    const message = document.getElementById("message");
     const countEl = document.getElementById("count");
     const correctEl = document.getElementById("correct");
     const missEl = document.getElementById("miss");
+    const accuracyEl = document.getElementById("accuracy");
     const qNumberEl = document.getElementById("qNumber");
     const keyboard = document.getElementById("keyboard");
     const resetBtn = document.getElementById("resetBtn");
     const nextBtn = document.getElementById("nextBtn");
     const soundBtn = document.getElementById("soundBtn");
-    const focusBtn = document.getElementById("focusBtn");
 
     let currentIndex = 0;
     let totalCount = 0;
@@ -1078,10 +989,15 @@
       countEl.textContent = totalCount;
       correctEl.textContent = correctCount;
       missEl.textContent = missCount;
+
+      const accuracy = totalCount === 0
+        ? 0
+        : Math.round((correctCount / totalCount) * 100);
+
+      accuracyEl.textContent = accuracy;
     }
 
-    function setMessage(html) {
-      message.innerHTML = html;
+    function setMessage(_) {
     }
 
     function isQuestionComplete() {
@@ -1122,7 +1038,7 @@
         currentIndex = 0;
       }
       renderQuestion();
-      setMessage("<strong>正解。</strong> 次の問題です。");
+      setMessage("");
     }
 
     function resetAll() {
@@ -1134,7 +1050,7 @@
       order = shuffle(questions);
       updateStats();
       renderQuestion();
-      setMessage("<strong>リセットしました。</strong> 最初から始められます。");
+      setMessage("");
     }
 
     function tryAdvanceWithKeyPreview(key) {
@@ -1194,7 +1110,7 @@
       questionPanel.classList.remove("shake");
       void questionPanel.offsetWidth;
       questionPanel.classList.add("shake");
-      setMessage("<strong>ミスタイプ。</strong> 次に押すキーを見てください。");
+      setMessage("");
     }
 
     function handleKeydown(e) {
@@ -1275,17 +1191,6 @@
           }
         } catch (_) {}
       }
-    });
-
-    focusBtn.addEventListener("click", async () => {
-      try {
-        const ctx = getAudioCtx();
-        if (ctx.state === "suspended") {
-          await ctx.resume();
-        }
-      } catch (_) {}
-      window.focus();
-      setMessage("<strong>入力受付中。</strong> キーボードを打ってください。");
     });
 
     window.addEventListener("keydown", async (e) => {
