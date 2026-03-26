@@ -469,13 +469,23 @@
       <div class="controls">
         <button class="btn" id="resetBtn">リセット</button>
         <button class="btn" id="soundBtn">音あり: ON</button>
+
         <select class="select" id="soundTypeSelect">
-          <option value="koto1">効果音: コト1</option>
-          <option value="koto2">効果音: コト2</option>
-          <option value="koto3">効果音: コト3</option>
-          <option value="koto4">効果音: コト4</option>
-          <option value="koto5">効果音: コト5</option>
+          <option value="koto1">通常音: コト1</option>
+          <option value="koto2">通常音: コト2</option>
+          <option value="koto3">通常音: コト3</option>
+          <option value="koto4">通常音: コト4</option>
+          <option value="koto5">通常音: コト5</option>
         </select>
+
+        <select class="select" id="missSoundTypeSelect">
+          <option value="same">ミス音: 通常音と同じ</option>
+          <option value="miss1">ミス音: ミス1</option>
+          <option value="miss2">ミス音: ミス2</option>
+          <option value="miss3">ミス音: ミス3</option>
+          <option value="mute">ミス音: 無音</option>
+        </select>
+
         <select class="select" id="modeSelect">
           <option value="quotes">名言問題</option>
         </select>
@@ -653,7 +663,6 @@
       { jp: "一流は一流を知る", kana: "いちりゅうはいちりゅうをしる" },
       { jp: "自信は練習から生まれる", kana: "じしんはれんしゅうからうまれる" },
       { jp: "人生を変えるのはいつも自分だ", kana: "じんせいをかえるのはいつもじぶんだ" },
-
       { jp: "成功は最後に笑う者のもの", kana: "せいこうはさいごにわらうもののもの" },
       { jp: "あきらめたらそこで試合終了だ", kana: "あきらめたらそこでしあいしゅうりょうだ" },
       { jp: "心を燃やせ", kana: "こころをもやせ" },
@@ -886,6 +895,7 @@
     const resetBtn = document.getElementById("resetBtn");
     const soundBtn = document.getElementById("soundBtn");
     const soundTypeSelect = document.getElementById("soundTypeSelect");
+    const missSoundTypeSelect = document.getElementById("missSoundTypeSelect");
 
     let currentIndex = 0;
     let totalCount = 0;
@@ -893,6 +903,7 @@
     let missCount = 0;
     let soundOn = true;
     let soundType = "koto1";
+    let missSoundType = "same";
     let lastHitKey = "";
 
     let activeState = null;
@@ -1607,7 +1618,7 @@
       }, delay * 1000);
     }
 
-    function playHit() {
+    function playCurrentHitPreview() {
       switch (soundType) {
         case "koto1":
           kotoTap(720, 520, 0.024, 0.02, 0.02, 0.01, "triangle", "sine", 0.012);
@@ -1629,12 +1640,41 @@
       }
     }
 
+    function playHit() {
+      playCurrentHitPreview();
+    }
+
+    function playMissSpecific() {
+      switch (missSoundType) {
+        case "same":
+          playCurrentHitPreview();
+          break;
+        case "miss1":
+          simpleBeep({ frequency: 220, duration: 0.05, type: "sawtooth", gain: 0.018 });
+          setTimeout(() => {
+            simpleBeep({ frequency: 170, duration: 0.04, type: "triangle", gain: 0.01 });
+          }, 12);
+          break;
+        case "miss2":
+          simpleBeep({ frequency: 190, duration: 0.06, type: "square", gain: 0.016 });
+          setTimeout(() => {
+            simpleBeep({ frequency: 140, duration: 0.03, type: "sine", gain: 0.008 });
+          }, 14);
+          break;
+        case "miss3":
+          simpleBeep({ frequency: 260, duration: 0.025, type: "triangle", gain: 0.016 });
+          setTimeout(() => {
+            simpleBeep({ frequency: 180, duration: 0.05, type: "sawtooth", gain: 0.012 });
+          }, 8);
+          break;
+        case "mute":
+          break;
+      }
+    }
+
     function playMiss() {
       if (!soundOn) return;
-      simpleBeep({ frequency: 220, duration: 0.05, type: "sawtooth", gain: 0.018 });
-      setTimeout(() => {
-        simpleBeep({ frequency: 170, duration: 0.04, type: "triangle", gain: 0.01 });
-      }, 12);
+      playMissSpecific();
     }
 
     resetBtn.addEventListener("click", resetAll);
@@ -1656,6 +1696,13 @@
       soundType = soundTypeSelect.value;
       if (soundOn) {
         playHit();
+      }
+    });
+
+    missSoundTypeSelect.addEventListener("change", () => {
+      missSoundType = missSoundTypeSelect.value;
+      if (soundOn) {
+        playMiss();
       }
     });
 
